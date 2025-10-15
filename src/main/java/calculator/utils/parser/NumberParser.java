@@ -1,4 +1,9 @@
 package calculator.utils.parser;
 
-public class NumberParser {
+import java.util.List;
+
+public interface NumberParser {
+    public List<Integer> numberParsing(String input);
+
+    public boolean isValid(String input);
 }
