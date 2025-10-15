@@ -4,17 +4,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import calculator.utils.parser.CustomDividerParser;
 import java.util.HashSet;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class CustomDividerParserTest {
     private CustomDividerParser customDividerParser;
 
-    public CustomDividerParserTest() {
-        this.customDividerParser = new CustomDividerParser();
+
+    @BeforeEach
+    public void setUp() {
+        customDividerParser = new CustomDividerParser();
     }
 
     public boolean containBasicDividers(HashSet<Character> input) {
-        if (input.contains(',') || input.contains(':')) {
+        if (input.contains(',') && input.contains(':')) {
             return true;
         }
         return false;
@@ -26,7 +29,7 @@ public class CustomDividerParserTest {
         String input = "//;\\n";
 
         // when
-        HashSet<Character> resultDividers = customDividerParser.parse(input);
+        HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
 
         // then
         assertThat(customDividerParser.isValid(input)).isTrue();
@@ -40,7 +43,7 @@ public class CustomDividerParserTest {
         String input = "//;\\n//+\\n";
 
         // when
-        HashSet<Character> resultDividers = customDividerParser.parse(input);
+        HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
 
         // then
         assertThat(customDividerParser.isValid(input)).isTrue();
@@ -55,7 +58,7 @@ public class CustomDividerParserTest {
         String input = "//5\\n";
 
         // when
-        HashSet<Character> resultDividers = customDividerParser.parse(input);
+        HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
 
         // then
         assertThat(customDividerParser.isValid(input)).isFalse();
@@ -67,10 +70,22 @@ public class CustomDividerParserTest {
         String input = "// \\n";
 
         // when
-        HashSet<Character> resultDividers = customDividerParser.parse(input);
+        HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
 
         // then
         assertThat(customDividerParser.isValid(input)).isFalse();
+    }
+
+    @Test
+    public void 커스텀_구분자_지정안함() {
+        // given
+        String input = "";
+
+        // when
+        HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
+
+        // then
+        assertThat(customDividerParser.isValid(input)).isTrue();
     }
 
     @Test
@@ -79,7 +94,7 @@ public class CustomDividerParserTest {
         String input = "//-+\\n";
 
         // when
-        HashSet<Character> resultDividers = customDividerParser.parse(input);
+        HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
 
         // then
         assertThat(customDividerParser.isValid(input)).isFalse();
@@ -91,7 +106,7 @@ public class CustomDividerParserTest {
         String input = "//:\\n";
 
         // when
-        HashSet<Character> resultDividers = customDividerParser.parse(input);
+        HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
 
         // then
         assertThat(customDividerParser.isValid(input)).isTrue();
