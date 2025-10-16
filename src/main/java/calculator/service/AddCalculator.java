@@ -8,24 +8,23 @@ import calculator.utils.splitter.CustomInputSplitter;
 import calculator.utils.splitter.InputSplitter;
 import java.util.List;
 
-public class AddCalculatorService extends Calculator {
-    public AddCalculatorService(List<Integer> numbers) {
-        super(numbers);
+public class AddCalculator implements Calculator {
+    private final InputSplitter inputSplitter;
+    private final DividerParser dividerParser;
+
+    public AddCalculator() {
+        inputSplitter = new CustomInputSplitter();
+        dividerParser = new CustomDividerParser();
     }
 
     @Override
-    public Long calculate() {
-
-    }
-
-    public AddCalculatorService getAddCalculatorService(String input) {
-        InputSplitter inputSplitter = new CustomInputSplitter();
+    public Integer calculate(String input) {
         List<String> dividersAndNumbers = inputSplitter.split(input);
         String dividers = dividersAndNumbers.get(0);
         String numbers = dividersAndNumbers.get(1);
-        DividerParser dividerParser = new CustomDividerParser();
         NumberParser numberParser = new CustomNumberParser(dividerParser.dividerParsing(dividers));
         List<Integer> inputs = numberParser.numberParsing(numbers);
-        return new AddCalculatorService(inputs);
+        return inputs.stream().mapToInt(Integer::valueOf).sum();
     }
+
 }
