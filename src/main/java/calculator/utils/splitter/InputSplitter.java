@@ -2,6 +2,6 @@ package calculator.utils.splitter;
 
 import java.util.List;
 
-public interface DividersAndNumberSplitter {
-    public List<String> split();
+public interface InputSplitter {
+    public List<String> split(String input);
 }
