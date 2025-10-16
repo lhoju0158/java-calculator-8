@@ -1,9 +1,9 @@
 package calculator.utils.parser;
 
+import calculator.error.ErrorMessage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CustomNumberParser implements NumberParser {
@@ -19,6 +19,7 @@ public class CustomNumberParser implements NumberParser {
 
     @Override
     public List<Integer> numberParsing(String input) {
+        isValid(input);
         List<Integer> result = new ArrayList<>();
         String[] numbers = numberPattern.split(input);
         for (String number : numbers) {
@@ -32,14 +33,10 @@ public class CustomNumberParser implements NumberParser {
         return result;
     }
 
-    @Override
-    public boolean isValid(String input) {
-        if (validNumberPattern.matcher(input).matches()) {
-            return true;
+    private void isValid(String input) {
+        if (!validNumberPattern.matcher(input).matches()) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_NUMBERS.getMessage());
         }
-
-        return false;
-
     }
 
     private String generateValidNumberPattern(HashSet<Character> dividers) {

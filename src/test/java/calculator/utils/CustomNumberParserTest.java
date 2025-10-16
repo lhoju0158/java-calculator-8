@@ -1,7 +1,9 @@
 package calculator.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import calculator.error.ErrorMessage;
 import calculator.utils.parser.CustomNumberParser;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 public class CustomNumberParserTest {
     private CustomNumberParser customNumberParser;
     private HashSet<Character> dividers;
+    private final String EXPECTED_MESSAGE = ErrorMessage.INVALID_NUMBERS.getMessage();
 
     @BeforeEach
     public void setUp() {
@@ -28,10 +31,8 @@ public class CustomNumberParserTest {
 
         // when
         List<Integer> resultNumbers = customNumberParser.numberParsing(input);
-        boolean isValid = customNumberParser.isValid(input);
 
         // then
-        assertThat(isValid).isTrue();
         assertThat(resultNumbers).containsExactly(1, 2, 3);
     }
 
@@ -40,11 +41,10 @@ public class CustomNumberParserTest {
         // given
         String input = "1+2+3";
 
-        // when
-        boolean isValid = customNumberParser.isValid(input);
-
-        // then
-        assertThat(isValid).isFalse();
+        // when, then
+        assertThatThrownBy(() -> customNumberParser.numberParsing(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(EXPECTED_MESSAGE);
     }
 
     @Test
@@ -54,10 +54,8 @@ public class CustomNumberParserTest {
 
         // when
         List<Integer> resultNumbers = customNumberParser.numberParsing(input);
-        boolean isValid = customNumberParser.isValid(input);
 
         // then
-        assertThat(isValid).isTrue();
         assertThat(resultNumbers).containsExactly(1, 2, 3);
     }
 
@@ -66,12 +64,10 @@ public class CustomNumberParserTest {
         // given
         String input = "-1,-2,-3";
 
-        // when
-        List<Integer> resultNumbers = customNumberParser.numberParsing(input);
-        boolean isValid = customNumberParser.isValid(input);
-
-        // then
-        assertThat(isValid).isFalse();
+        // when, then
+        assertThatThrownBy(() -> customNumberParser.numberParsing(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(EXPECTED_MESSAGE);
     }
 
 }
