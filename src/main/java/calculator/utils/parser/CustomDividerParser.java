@@ -1,5 +1,6 @@
 package calculator.utils.parser;
 
+import calculator.error.ErrorMessage;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,7 @@ public class CustomDividerParser implements DividerParser {
 
     @Override
     public HashSet<Character> dividerParsing(String input) {
+        isValid(input);
         HashSet<Character> dividers = new HashSet<>(BASIC_DIVIDERS);
         if (input.isEmpty()) {
             return dividers;
@@ -24,11 +26,9 @@ public class CustomDividerParser implements DividerParser {
         return dividers;
     }
 
-    @Override
-    public boolean isValid(String input) {
-        if (VALID_DIVIDER_PATTERN.matcher(input).matches()) {
-            return true;
+    private void isValid(String input) {
+        if (!VALID_DIVIDER_PATTERN.matcher(input).matches()) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_DIVIDERS.getMessage());
         }
-        return false;
     }
 }

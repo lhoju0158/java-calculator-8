@@ -1,7 +1,9 @@
 package calculator.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import calculator.error.ErrorMessage;
 import calculator.utils.parser.CustomDividerParser;
 import java.util.HashSet;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 public class CustomDividerParserTest {
     private CustomDividerParser customDividerParser;
+    private final String EXPECTED_MESSAGE = ErrorMessage.INVALID_DIVIDERS.getMessage();
 
 
     @BeforeEach
@@ -32,7 +35,6 @@ public class CustomDividerParserTest {
         HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
 
         // then
-        assertThat(customDividerParser.isValid(input)).isTrue();
         assertThat(containBasicDividers(resultDividers)).isTrue();
         assertThat(resultDividers).contains(';');
     }
@@ -46,7 +48,6 @@ public class CustomDividerParserTest {
         HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
 
         // then
-        assertThat(customDividerParser.isValid(input)).isTrue();
         assertThat(containBasicDividers(resultDividers)).isTrue();
         assertThat(resultDividers).contains(';');
         assertThat(resultDividers).contains('+');
@@ -57,23 +58,21 @@ public class CustomDividerParserTest {
         // given
         String input = "//5\\n";
 
-        // when
-        HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
-
-        // then
-        assertThat(customDividerParser.isValid(input)).isFalse();
+        // when, then
+        assertThatThrownBy(() -> customDividerParser.dividerParsing(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(EXPECTED_MESSAGE);
     }
 
     @Test
     public void 커스텀_구분자_공백입력() {
         // given
-        String input = "// \\n";
+        String input = "//\\n";
 
-        // when
-        HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
-
-        // then
-        assertThat(customDividerParser.isValid(input)).isFalse();
+        // when, then
+        assertThatThrownBy(() -> customDividerParser.dividerParsing(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(EXPECTED_MESSAGE);
     }
 
     @Test
@@ -85,7 +84,7 @@ public class CustomDividerParserTest {
         HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
 
         // then
-        assertThat(customDividerParser.isValid(input)).isTrue();
+        assertThat(containBasicDividers(resultDividers)).isTrue();
     }
 
     @Test
@@ -93,11 +92,10 @@ public class CustomDividerParserTest {
         // given
         String input = "//-+\\n";
 
-        // when
-        HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
-
-        // then
-        assertThat(customDividerParser.isValid(input)).isFalse();
+        // when, then
+        assertThatThrownBy(() -> customDividerParser.dividerParsing(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(EXPECTED_MESSAGE);
     }
 
     @Test
@@ -109,7 +107,6 @@ public class CustomDividerParserTest {
         HashSet<Character> resultDividers = customDividerParser.dividerParsing(input);
 
         // then
-        assertThat(customDividerParser.isValid(input)).isTrue();
         assertThat(containBasicDividers(resultDividers)).isTrue();
         assertThat(resultDividers.size()).isEqualTo(2);
     }

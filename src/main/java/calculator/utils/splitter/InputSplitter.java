@@ -1,4 +1,7 @@
-package calculator.utils.parser;
+package calculator.utils.splitter;
 
-public class InputSplitter {
+import java.util.List;
+
+public interface DividersAndNumberSplitter {
+    public List<String> split();
 }
