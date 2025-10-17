@@ -27,6 +27,7 @@ public class CustomNumberParser implements NumberParser {
                 try {
                     result.add(Integer.parseInt(number));
                 } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException(ErrorMessage.UNEXPECTED_NUMBERS.getMessage());
                 }
             }
         }

@@ -23,6 +23,9 @@ public class CustomDividerParser implements DividerParser {
         while (matcher.find()) {
             dividers.add(matcher.group(1).charAt(0));
         }
+        if (dividers.size() > 10) {
+            throw new IllegalArgumentException(ErrorMessage.OVER_VALID_DIVIDERS_NUMBER.getMessage());
+        }
         return dividers;
     }
 
