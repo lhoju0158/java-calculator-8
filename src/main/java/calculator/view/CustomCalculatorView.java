@@ -1,7 +1,6 @@
 package calculator.view;
 
 import camp.nextstep.edu.missionutils.Console;
-import org.junit.jupiter.api.Test;
 
 public class CustomCalculatorView implements CalculatorView {
     private final String INPUT_FORM = "덧셈할 문자열을 입력해 주세요.";
