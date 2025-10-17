@@ -108,13 +108,12 @@ public class AddCalculatorTest {
     @Test
     public void 음수_수열_입력() {
         // given
-        String input = "//-\\n1,-2,-3";
+        String input = "//;\\n1;-2;-3";
 
-        // when
-        Integer result = addCalculator.calculate(input);
-
-        // then
-        assertThat(result).isEqualTo(EXPECTED_RESULT);
+        // when, then
+        assertThatThrownBy(() -> addCalculator.calculate(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(EXPECTED_NUMBER_MESSAGE);
     }
 
 }

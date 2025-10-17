@@ -13,7 +13,8 @@ import org.junit.jupiter.api.Test;
 public class CustomNumberParserTest {
     private CustomNumberParser customNumberParser;
     private HashSet<Character> dividers;
-    private final String EXPECTED_MESSAGE = ErrorMessage.INVALID_NUMBERS.getMessage();
+    private final String EXPECTED_MESSAGE_1 = ErrorMessage.INVALID_NUMBERS.getMessage();
+    private final String EXPECTED_MESSAGE_2 = ErrorMessage.UNEXPECTED_NUMBERS.getMessage();
 
     @BeforeEach
     public void setUp() {
@@ -44,7 +45,7 @@ public class CustomNumberParserTest {
         // when, then
         assertThatThrownBy(() -> customNumberParser.numberParsing(input))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining(EXPECTED_MESSAGE);
+                .hasMessageContaining(EXPECTED_MESSAGE_1);
     }
 
     @Test
@@ -60,6 +61,17 @@ public class CustomNumberParserTest {
     }
 
     @Test
+    public void 수열_파싱_테스트_띄어쓰기_입력() {
+        // given
+        String input = "1,2, ,3";
+
+        // when, then
+        assertThatThrownBy(() -> customNumberParser.numberParsing(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(EXPECTED_MESSAGE_2);
+    }
+
+    @Test
     public void 수열_파싱_테스트_음수입력() {
         // given
         String input = "-1,-2,-3";
@@ -67,7 +79,7 @@ public class CustomNumberParserTest {
         // when, then
         assertThatThrownBy(() -> customNumberParser.numberParsing(input))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining(EXPECTED_MESSAGE);
+                .hasMessageContaining(EXPECTED_MESSAGE_1);
     }
 
 }

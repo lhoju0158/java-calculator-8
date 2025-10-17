@@ -76,6 +76,17 @@ public class CustomDividerParserTest {
     }
 
     @Test
+    public void 커스텀_구분자_띄어쓰기() {
+        // given
+        String input = "// \\n";
+
+        // when, then
+        assertThatThrownBy(() -> customDividerParser.dividerParsing(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(EXPECTED_MESSAGE);
+    }
+
+    @Test
     public void 커스텀_구분자_지정안함() {
         // given
         String input = "";
