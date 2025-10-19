@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 public class CustomNumberParser implements NumberParser {
     private final Pattern validNumberPattern;
     private final Pattern numberPattern;
+    private final Integer MAX_VALUE = 20000000;
 
     public CustomNumberParser(HashSet<Character> dividers) {
         String validNumberPatternString = generateValidNumberPattern(dividers);
@@ -22,14 +23,20 @@ public class CustomNumberParser implements NumberParser {
         isValid(input);
         List<Integer> result = new ArrayList<>();
         String[] numbers = numberPattern.split(input);
-        for (String number : numbers) {
-            if (!number.isEmpty()) {
-                try {
-                    result.add(Integer.parseInt(number));
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException(ErrorMessage.UNEXPECTED_NUMBERS.getMessage());
-                }
+        for (String numberString : numbers) {
+            if (numberString.isEmpty()) {
+                continue;
             }
+            int number;
+            try {
+                number = Integer.parseInt(numberString);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException(ErrorMessage.UNEXPECTED_NUMBERS.getMessage());
+            }
+            if (number > MAX_VALUE) {
+                throw new IllegalArgumentException(ErrorMessage.OVER_VALID_MAX_VALUE.getMessage());
+            }
+            result.add(number);
         }
         return result;
     }
