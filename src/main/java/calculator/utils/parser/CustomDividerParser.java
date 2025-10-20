@@ -8,9 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CustomDividerParser implements DividerParser {
-    private final List<Character> BASIC_DIVIDERS = Arrays.asList(new Character[]{',', ':'});
-    private final Pattern VALID_DIVIDER_PATTERN = Pattern.compile("^(//([^\\d\\s])\\\\n)*$");
-    private final Pattern DIVIDER_PATTERN = Pattern.compile("//([^\\d\\s])\\\\n");
+    private static final List<Character> BASIC_DIVIDERS = Arrays.asList(new Character[]{',', ':'});
+    private static final Pattern VALID_DIVIDER_PATTERN = Pattern.compile("^(//([^\\d\\s])\\\\n)*$");
+    private static final Pattern DIVIDER_PATTERN = Pattern.compile("//([^\\d\\s])\\\\n");
 
     @Override
     public HashSet<Character> dividerParsing(String input) {
